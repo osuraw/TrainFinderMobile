@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "591332674661",
+    "firebase_url": "https://rare-habitat-249111.firebaseio.com",
+    "project_id": "rare-habitat-249111",
+    "storage_bucket": "rare-habitat-249111.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591332674661:android:915e255288c07ef6",
+        "android_client_info": {
+          "package_name": "com.example.osura.com.trainfinderdriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591332674661-f9f22890opvnm4kbolbqdrml1busjjns.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-nzlQ1fsdKeE0zd8aOK8wW5fSrfkPjcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "591332674661-f9f22890opvnm4kbolbqdrml1busjjns.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
