@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class WebService {
 
-    private static String path ="https://trainfinderapi.azurewebsites.net/api/";
+    private static String path ="http://trainfinderapi.azurewebsites.net/api/";
     private static String tag ="TrainFinder/WebService";
     public static String DoGet(String path)
     {
