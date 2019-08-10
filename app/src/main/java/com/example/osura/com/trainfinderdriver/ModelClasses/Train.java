@@ -2,6 +2,7 @@ package com.example.osura.com.trainfinderdriver.ModelClasses;
 
 public class Train
 {
+    private String tag ="TrainFinder_TrainModel";
     private String Name;
     private int TID;
 

@@ -45,9 +45,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     public void Btn_Attached_OnClick(View view) {
         Toast.makeText(this,"Train "+trainSelected.getName().toUpperCase()+" Attached To Server",Toast.LENGTH_LONG).show();
