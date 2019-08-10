@@ -24,8 +24,8 @@ public class LocationService extends IntentService {
         @Override
         public void onLocationChanged(Location location) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-            String currentDateandTime = sdf.format(new Date());
-            StringBuilder stringBuilder = new StringBuilder("1,1,"+currentDateandTime);
+            String currentDateAndTime = sdf.format(new Date());
+            StringBuilder stringBuilder = new StringBuilder("1,1,"+currentDateAndTime);
             stringBuilder.append(","+Location.convert(location.getLatitude(),Location.FORMAT_DEGREES));
             stringBuilder.append(","+Location.convert(location.getLongitude(),Location.FORMAT_DEGREES));
             stringBuilder.append(",,"+location.getSpeed());
@@ -36,9 +36,8 @@ public class LocationService extends IntentService {
         }
 
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            Log.i(tag,"onStatusChanged");
-        }
+        public void onStatusChanged(String provider, int status, Bundle extras) {Log.i(tag,"onStatusChanged");}
+
         @Override
         public void onProviderEnabled(String provider) {
             Log.i(tag,"onProviderEnabled");
@@ -57,6 +56,7 @@ public class LocationService extends IntentService {
         super.onCreate();
         trainService = new TrainService();
         loaderManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Log.i(tag,"OnCreate");
         try {
             loaderManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,2000,0,locationListener);
             AccessStorage.getPublicAlbumStorageDir("/LocationLog.txt");
