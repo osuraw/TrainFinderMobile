@@ -6,13 +6,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import com.example.osura.com.trainfinderdriver.ServiceClasses.Helper.AccessStorage;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,8 +19,7 @@ public class LocationService extends IntentService {
     private LocationManager loaderManager;
     private int trainId;
     TrainService trainService;
-    private OutputStreamWriter file;
-    FileOutputStream fOut;
+
     private LocationListener locationListener= new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -34,12 +30,7 @@ public class LocationService extends IntentService {
             stringBuilder.append(","+Location.convert(location.getLongitude(),Location.FORMAT_DEGREES));
             stringBuilder.append(",,"+location.getSpeed());
             stringBuilder.append(","+location.getBearing());
-            try {
-                file.append("{\"FIELD1\":\""+stringBuilder.toString()+"\"},\n");
-                file.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            AccessStorage.Write(stringBuilder.toString());
             trainService.SendLocationData(trainId,stringBuilder.toString());
             Log.i(tag,"onLocationChanged"+stringBuilder.toString());
         }
@@ -68,12 +59,9 @@ public class LocationService extends IntentService {
         loaderManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         try {
             loaderManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,2000,0,locationListener);
-            getPublicAlbumStorageDir("/LocationLog.txt");
+            AccessStorage.getPublicAlbumStorageDir("/LocationLog.txt");
         }
-        catch (SecurityException e)
-        {
-            Log.i(tag,e.getMessage());
-        }
+        catch (SecurityException e){Log.i(tag,e.getMessage());}
     }
 
     @Override
@@ -85,23 +73,5 @@ public class LocationService extends IntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-    }
-
-    public void getPublicAlbumStorageDir(String fileName) {
-        System.out.println(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()));
-        String path = Environment.getExternalStorageDirectory().getAbsoluteFile()+"/data1";
-        File dir =new File(path);
-        if(!dir.exists())
-            dir.mkdirs();
-
-        try {
-            File file = new File(dir.getPath()+fileName);
-            fOut = new FileOutputStream(file);
-            this.file = new OutputStreamWriter(fOut);
-            this.file.write("");
-        } catch (IOException e) {
-           e.printStackTrace();
-        }
     }
 }

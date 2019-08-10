@@ -27,9 +27,9 @@ public class TrainService implements AsynkReturn {
     }
 
     public void setTrainList(){
-        AsyncClass asynkClass =new AsyncClass();
-        asynkClass.asyncReturnDelegate =this;
-        asynkClass.execute("Search/Trains","GetTrains");
+        AsyncClass asyncClass =new AsyncClass();
+        asyncClass.asyncReturnDelegate =this;
+        asyncClass.execute("Search/Trains","GetTrains");
     }
 
     public void SendLocationData(int trainId,String data)
