@@ -12,9 +12,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class WebService {
-
+  
     private static String path ="https://trainfinderapi.azurewebsites.net/api/";
     private static String tag ="TrainFinder_WebService";
+
     public static String DoGet(String path)
     {
         Log.i(tag,"DoGet");

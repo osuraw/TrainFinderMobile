@@ -1,4 +1,7 @@
 <resources>
+
+    <string name="URL">https://trainfinderapi.azurewebsites.net/api/</string>
+
     <string name="app_name">TrainFinderDriver</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

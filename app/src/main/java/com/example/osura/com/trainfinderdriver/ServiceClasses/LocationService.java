@@ -5,9 +5,10 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.example.osura.com.trainfinderdriver.ServiceClasses.Helper.AccessStorage;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,9 +30,11 @@ public class LocationService extends IntentService {
             stringBuilder.append(","+Location.convert(location.getLongitude(),Location.FORMAT_DEGREES));
             stringBuilder.append(",,"+location.getSpeed());
             stringBuilder.append(","+location.getBearing());
+            AccessStorage.Write(stringBuilder.toString());
             trainService.SendLocationData(trainId,stringBuilder.toString());
             Log.i(tag,"onLocationChanged"+stringBuilder.toString());
         }
+
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {Log.i(tag,"onStatusChanged");}
 
@@ -55,7 +58,8 @@ public class LocationService extends IntentService {
         loaderManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         Log.i(tag,"OnCreate");
         try {
-            loaderManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,locationListener);
+            loaderManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,2000,0,locationListener);
+            AccessStorage.getPublicAlbumStorageDir("/LocationLog.txt");
         }
         catch (SecurityException e){Log.i(tag,e.getMessage());}
     }
@@ -64,5 +68,10 @@ public class LocationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         trainId = intent.getIntExtra("trainId",0);
         Log.i(tag,"Service starts");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }
