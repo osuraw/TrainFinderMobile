@@ -18,12 +18,13 @@ public class LocationService extends IntentService {
     private LocationManager loaderManager;
     private int trainId;
     TrainService trainService;
+
     private LocationListener locationListener= new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-            String currentDateandTime = sdf.format(new Date());
-            StringBuilder stringBuilder = new StringBuilder("1,1,"+currentDateandTime);
+            String currentDateAndTime = sdf.format(new Date());
+            StringBuilder stringBuilder = new StringBuilder("1,1,"+currentDateAndTime);
             stringBuilder.append(","+Location.convert(location.getLatitude(),Location.FORMAT_DEGREES));
             stringBuilder.append(","+Location.convert(location.getLongitude(),Location.FORMAT_DEGREES));
             stringBuilder.append(",,"+location.getSpeed());
@@ -32,9 +33,8 @@ public class LocationService extends IntentService {
             Log.i(tag,"onLocationChanged"+stringBuilder.toString());
         }
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            Log.i(tag,"onStatusChanged");
-        }
+        public void onStatusChanged(String provider, int status, Bundle extras) {Log.i(tag,"onStatusChanged");}
+
         @Override
         public void onProviderEnabled(String provider) {
             Log.i(tag,"onProviderEnabled");
@@ -53,15 +53,11 @@ public class LocationService extends IntentService {
         super.onCreate();
         trainService = new TrainService();
         loaderManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Log.i(tag,"OnCreate");
         try {
             loaderManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,locationListener);
-            Location mobileLocation = loaderManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            System.out.println(mobileLocation.getLatitude());
         }
-        catch (SecurityException e)
-        {
-            Log.i(tag,e.getMessage());
-        }
+        catch (SecurityException e){Log.i(tag,e.getMessage());}
     }
 
     @Override

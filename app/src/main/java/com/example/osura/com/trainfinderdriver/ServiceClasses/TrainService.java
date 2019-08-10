@@ -14,6 +14,7 @@ import java.util.List;
 public class TrainService implements AsynkReturn {
     private MainActivity mainActivity;
     private String tag ="TrainFinder_TrainService";
+
     public TrainService(){}
 
     public TrainService(MainActivity mainActivity) {
@@ -27,23 +28,23 @@ public class TrainService implements AsynkReturn {
     }
 
     public void setTrainList(){
-        AsyncClass asynkClass =new AsyncClass();
-        asynkClass.asyncReturnDelegate =this;
-        asynkClass.execute("Search/Trains","GetTrains");
+        AsyncClass asyncClass =new AsyncClass();
+        asyncClass.asyncReturnDelegate =this;
+        asyncClass.execute("Search/Trains","GetTrains");
     }
 
     public void SendLocationData(int trainId,String data)
     {
-        AsyncClass asynkClass =new AsyncClass();
-        asynkClass.asyncReturnDelegate =this;
-        asynkClass.execute("Location/Setlocation?Id="+trainId+"&data="+data);
+        AsyncClass asyncClass =new AsyncClass();
+        asyncClass.asyncReturnDelegate =this;
+        asyncClass.execute("Location/Setlocation?Id="+trainId+"&data="+data);
     }
 
     public void GetLiveFeed(int trainId,String data)
     {
-        AsyncClass asynkClass =new AsyncClass();
-        asynkClass.asyncReturnDelegate =this;
-        asynkClass.execute("Location/Setlocation?Id="+trainId+"&data="+data);
+        AsyncClass asyncClass =new AsyncClass();
+        asyncClass.asyncReturnDelegate =this;
+        asyncClass.execute("Location/Setlocation?Id="+trainId+"&data="+data);
     }
 
     @Override
