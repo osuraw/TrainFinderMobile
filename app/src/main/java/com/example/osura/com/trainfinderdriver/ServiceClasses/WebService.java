@@ -26,6 +26,8 @@ public class WebService {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
 
+            Log.i(tag,String.valueOf(urlConnection.getResponseCode()));
+
             InputStream inputStream  = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;

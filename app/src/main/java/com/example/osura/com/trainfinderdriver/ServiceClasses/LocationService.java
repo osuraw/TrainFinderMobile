@@ -15,63 +15,63 @@ import java.util.Date;
 
 public class LocationService extends IntentService {
 
-    private String tag ="TrainFinder_LocationService";
+    private String tag = "TrainFinder_LocationService";
     private LocationManager loaderManager;
     private int trainId;
     TrainService trainService;
 
-    private LocationListener locationListener= new LocationListener() {
+    private LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             String currentDateAndTime = sdf.format(new Date());
-            StringBuilder stringBuilder = new StringBuilder("1,1,"+currentDateAndTime);
-            stringBuilder.append(","+Location.convert(location.getLatitude(),Location.FORMAT_DEGREES));
-            stringBuilder.append(","+Location.convert(location.getLongitude(),Location.FORMAT_DEGREES));
-            stringBuilder.append(",,"+location.getSpeed());
-            stringBuilder.append(","+location.getBearing());
+            StringBuilder stringBuilder = new StringBuilder("1,1," + currentDateAndTime);
+            stringBuilder.append("," + Location.convert(location.getLatitude(), Location.FORMAT_DEGREES));
+            stringBuilder.append("," + Location.convert(location.getLongitude(), Location.FORMAT_DEGREES));
+            stringBuilder.append(",," + location.getSpeed());
+            stringBuilder.append("," + location.getBearing());
+//            trainService.SendLocationData(trainId, stringBuilder.toString());
             AccessStorage.Write(stringBuilder.toString());
-            trainService.SendLocationData(trainId,stringBuilder.toString());
-            Log.i(tag,"onLocationChanged"+stringBuilder.toString());
+            Log.i(tag, "onLocationChanged" + stringBuilder.toString());
         }
 
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {Log.i(tag,"onStatusChanged");}
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            Log.i(tag, "onStatusChanged");
+        }
 
         @Override
         public void onProviderEnabled(String provider) {
-            Log.i(tag,"onProviderEnabled");
+            Log.i(tag, "onProviderEnabled");
         }
 
         @Override
         public void onProviderDisabled(String provider) {
-            Log.i(tag,"onProviderDisabled");
+            Log.i(tag, "onProviderDisabled");
         }
     };
 
-    public LocationService(){super("LocationService");}
+    public LocationService() {
+        super("LocationService");
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         trainService = new TrainService();
         loaderManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Log.i(tag,"OnCreate");
+        Log.i(tag, "OnCreate");
         try {
-            loaderManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,2000,0,locationListener);
+            loaderManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
             AccessStorage.getPublicAlbumStorageDir("/LocationLog.txt");
+        } catch (SecurityException e) {
+            Log.i(tag, e.getMessage());
         }
-        catch (SecurityException e){Log.i(tag,e.getMessage());}
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        trainId = intent.getIntExtra("trainId",0);
-        Log.i(tag,"Service starts");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+        trainId = intent.getIntExtra("trainId", 0);
+        Log.i(tag, "Service starts");
     }
 }
