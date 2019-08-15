@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -31,6 +30,7 @@ public class LocationService extends IntentService {
             trainService.SendLocationData(trainId,stringBuilder.toString());
             Log.i(tag,"onLocationChanged"+stringBuilder.toString());
         }
+
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             Log.i(tag,"onStatusChanged");
@@ -54,9 +54,7 @@ public class LocationService extends IntentService {
         trainService = new TrainService();
         loaderManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         try {
-            loaderManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,locationListener);
-            Location mobileLocation = loaderManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            System.out.println(mobileLocation.getLatitude());
+            loaderManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
         }
         catch (SecurityException e)
         {
