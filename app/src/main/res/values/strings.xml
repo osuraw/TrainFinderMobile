@@ -1,4 +1,7 @@
 <resources>
+
+    <string name="URL">https://trainfinderapi.azurewebsites.net/api/</string>
+
     <string name="app_name">TrainFinderDriver</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -15,7 +18,7 @@
     <string name="status_lbl_delay">Delay</string>
     <string name="status_lbl_next">Next Stop</string>
     <string name="status_lbl_speed">Speed</string>
-    <string name="status_lbl_speed_require">Speed Require</string>
+    <string name="status_lbl_speed_require">Speed Require </string>
     <string name="status_lbl_alert">Alert Type</string>
     <string name="status_lbl_alert_distance">Distance</string>
     <string name="status_lbl_alert_msg">Alert Message</string>

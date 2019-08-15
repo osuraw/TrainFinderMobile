@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -20,6 +21,8 @@ import com.example.osura.com.trainfinderdriver.R;
 import com.example.osura.com.trainfinderdriver.ServiceClasses.FirebaseService;
 import com.example.osura.com.trainfinderdriver.ServiceClasses.LocationService;
 import com.example.osura.com.trainfinderdriver.ServiceClasses.TrainService;
+
+import java.util.List;
 
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private String tag ="TrainFinder_MainActivity";
     private Spinner spinner;
+    private Button button;
     private Train trainSelected;
     TrainService trainService;
 
@@ -45,14 +49,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         trainService.setTrainList();
         setContentView(R.layout.activity_main);
         spinner = findViewById(R.id.cmbTrain);
+        button = findViewById(R.id.btn_attach);
         spinner.setOnItemSelectedListener(this);
 
         registerWithNotificationHubs();
+
+        button.setEnabled(false);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         trainSelected = (Train) spinner.getSelectedItem();
+        if(trainSelected.getTID()!=0)
+            button.setEnabled(true);
+        else
+            button.setEnabled(false);
     }
 
     @Override
@@ -70,19 +81,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         finish();
     }
 
-    public void UpdateUI() {
-        ArrayAdapter<Train> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, trainService.getTrainList());
+    public void UpdateUI(List<Train> trainList) {
+        trainList.add(0,new Train(0,"Select Train"));
+        ArrayAdapter<Train> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, trainList);
         spinner.setAdapter(adapter);
     }
 
     private void CheckPermission() {
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PackageManager.PERMISSION_GRANTED);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.i(tag,"sss");
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
     }
     //endregion
 

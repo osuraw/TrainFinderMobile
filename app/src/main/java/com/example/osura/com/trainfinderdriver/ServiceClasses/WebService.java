@@ -12,11 +12,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class WebService {
-
-    private static String path ="http://192.168.1.3:11835/api/";
+  
+    private static String path ="https://trainfinderapi.azurewebsites.net/api/";
     private static String tag ="TrainFinder_WebService";
+
     public static String DoGet(String path)
     {
+        Log.i(tag,"DoGet");
         String returnData="";
         HttpURLConnection urlConnection=null;
         try {
@@ -24,16 +26,18 @@ public class WebService {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
 
+            Log.i(tag,String.valueOf(urlConnection.getResponseCode()));
+
             InputStream inputStream  = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line=bufferedReader.readLine())!=null)
                 returnData+=line;
         } catch (MalformedURLException e) {
-            Log.i(tag,e.getMessage());
+            Log.e(tag,e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            Log.i(tag,e.getMessage());
+            Log.e(tag,e.getMessage());
             e.printStackTrace();
         } finally {
             urlConnection.disconnect();
