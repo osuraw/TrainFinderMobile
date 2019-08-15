@@ -18,10 +18,16 @@ import android.widget.Toast;
 
 import com.example.osura.com.trainfinderdriver.ModelClasses.Train;
 import com.example.osura.com.trainfinderdriver.R;
+import com.example.osura.com.trainfinderdriver.ServiceClasses.FirebaseService;
 import com.example.osura.com.trainfinderdriver.ServiceClasses.LocationService;
 import com.example.osura.com.trainfinderdriver.ServiceClasses.TrainService;
 
 import java.util.List;
+
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.example.osura.com.trainfinderdriver.ServiceClasses.RegistrationIntentService;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener  {
@@ -32,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Train trainSelected;
     TrainService trainService;
 
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+    //region MainActivityHandel
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner = findViewById(R.id.cmbTrain);
         button = findViewById(R.id.btn_attach);
         spinner.setOnItemSelectedListener(this);
+
+        registerWithNotificationHubs();
+
         button.setEnabled(false);
     }
 
@@ -55,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {}
+    public void onNothingSelected(AdapterView<?> parent) { }
 
     public void Btn_Attached_OnClick(View view) {
         Toast.makeText(this,"Train "+trainSelected.getName().toUpperCase()+" Attached To Server",Toast.LENGTH_LONG).show();
@@ -81,4 +93,31 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
     }
+    //endregion
+
+    //region PushNotificationHandel
+    public void registerWithNotificationHubs()
+    {
+        if (checkPlayServices()) {
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+    }
+    // check for google play services on device
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(tag, "This device is not supported by Google Play Services.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+    //endregion
 }

@@ -64,7 +64,8 @@ public class LocationService extends IntentService {
         try {
             loaderManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
             AccessStorage.getPublicAlbumStorageDir("/LocationLog.txt");
-        } catch (SecurityException e) {
+        } 
+        catch (SecurityException e) {
             Log.i(tag, e.getMessage());
         }
     }
